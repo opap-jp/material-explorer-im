@@ -5,9 +5,10 @@ RUN apt-get update \
     && apt-get install -y imagemagick ghostscript \
     && pip install Flask==0.10.1
 
-WORKDIR /app
-COPY src /app
-COPY cmd.sh /
+RUN mkdir /usr/src/im
+WORKDIR /usr/src/im
+COPY src ./src
+COPY cmd.sh .
+RUN chmod 755 cmd.sh
 
-EXPOSE 9090
-CMD ["/cmd.sh"]
+CMD ./cmd.sh
