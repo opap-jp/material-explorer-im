@@ -22,14 +22,12 @@ class ImageMagickTestCase(unittest.TestCase):
         self.assertEqual(response.data, b"pong")
 
     def test_resize_with_valid_params(self):
-        response = self.app.post("/resize",
-            content_type='multipart/form-data',
-            data=dict(
-                width=THUMB_LENGTH,
-                height=THUMB_LENGTH,
-                data=resolve_image("kosys.png"),
-            )
+        params = dict(
+            width=THUMB_LENGTH,
+            height=THUMB_LENGTH,
+            data=resolve_image("kosys.png"),
         )
+        response = self.upload(params)
         self.assertEqual(response.status_code, 200)
 
     def upload(self, params):
