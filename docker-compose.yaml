@@ -1,7 +1,7 @@
 version: "2"
 services:
   im:
-    command: coverage run -m unittest discover test
+    command: coverage run -m unittest discover test && coverage xml
     build:
       context: .
     volumes:
