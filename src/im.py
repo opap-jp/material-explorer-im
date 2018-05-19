@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, Response
 import subprocess
+# import pdb; pdb.set_trace()
 
 MAX_THUMB_LENGTH = 3840
 
@@ -19,7 +20,7 @@ def resize():
             raise ValueError("Both of width and height are required.")
         if (width <= 0 or width > MAX_THUMB_LENGTH):
             raise ValueError("The value of width is invalid. A width must be (0, {0}]. (The value was {1}.)".format(MAX_THUMB_LENGTH, width))
-        if (height is None or height <= 0 or height > MAX_THUMB_LENGTH):
+        if (height <= 0 or height > MAX_THUMB_LENGTH):
             raise ValueError("The value of height is invalid. A height must be (0, {0}]. (The value was {1}.)".format(MAX_THUMB_LENGTH, height))
         if (data is None):
             raise ValueError("An image data is required.")
