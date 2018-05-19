@@ -1,5 +1,11 @@
 sudo: required
 services:
   - docker
+before_script:
 script:
-  - docker build .
+  - docker-compose up --build
+  - docker cp "$(docker-compose ps -q im)":/usr/src/im/.coverage - > .coverage
+after_success:
+  - codecov
+after_script:
+  - rm .coverage

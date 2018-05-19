@@ -1,0 +1,9 @@
+version: "2"
+services:
+  im:
+    command: coverage run -m unittest discover test
+    build:
+      context: .
+    volumes:
+      - ./src:/usr/src/im/src
+      - ./test:/usr/src/im/test
