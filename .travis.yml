@@ -1,11 +1,16 @@
 sudo: required
+language: python
+python:
+  - "3.4"
 services:
   - docker
+install:
+  - pip install codecov==2.0.15
 before_script:
 script:
   - docker-compose up --build
   - docker cp "$(docker-compose ps -q im)":/usr/src/im/.coverage - > .coverage
-after_success:
   - codecov
+after_success:
 after_script:
   - rm .coverage
