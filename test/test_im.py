@@ -8,8 +8,9 @@ class ImageMagickTestCase(unittest.TestCase):
     def tearDown(self):
         None
 
-    def test_1_is_1(self):
-        self.assertEqual(1, 1)
+    def test_ping(self):
+        response = self.app.get("/ping")
+        self.assertEqual(response.data, b"pong")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
