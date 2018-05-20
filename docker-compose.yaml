@@ -2,7 +2,7 @@
 version: "2"
 services:
   im:
-    command: bash -c "coverage run --source=src -m unittest discover test && coverage report && coverage xml"
+    command: ./test.sh
     build:
       context: .
     volumes:
