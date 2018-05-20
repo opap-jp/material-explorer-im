@@ -34,6 +34,12 @@ class ImageMagickTestCase(unittest.TestCase):
 
         with_image("kosys.png", action)
 
+    def test_resize_without_width(self):
+        def action(image):
+            params = dict(height=THUMB_LENGTH, data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 400)
+
     def request_resize(self, params):
         return self.app.post("/resize",
             content_type='multipart/form-data',
