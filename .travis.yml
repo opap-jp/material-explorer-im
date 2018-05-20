@@ -11,6 +11,7 @@ before_script:
 script:
   - docker-compose up --build
   - docker cp "$(docker-compose ps -q im)":/usr/src/im/coverage.xml coverage.xml
+  - codecov
 after_success:
 after_script:
   - rm coverage.xml
