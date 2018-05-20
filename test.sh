@@ -1,5 +1,5 @@
 #!/bin/bash
 
-coverage run --source=src -m unittest discover test
+coverage run --branch --source=src -m unittest discover test
 coverage report
 coverage xml
