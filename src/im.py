@@ -29,17 +29,17 @@ def resize():
     try:
         (width, height, data) = validated_data()
         command = 'convert - -resize {0}x{1} png:-'.format(width, height)
-        process = subprocess.Popen(command.split(" "), stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        process.stdin.write(data.read())
-        process.stdin.close()
-        converted = process.stdout.read()
-        code = process.wait()
+        with subprocess.Popen(command.split(" "), stdin=subprocess.PIPE, stdout=subprocess.PIPE) as process:
+            process.stdin.write(data.read())
+            process.stdin.close()
+            converted = process.stdout.read()
+            code = process.wait()
 
-        if (code == 0):
-            return Response(converted, mimetype='image/png')
-        else:
-            app.logger.error("Failed to convert.")
-            return abort(500)
+            if (code == 0):
+                return Response(converted, mimetype='image/png')
+            else:
+                app.logger.error("Failed to convert.")
+                return abort(500)
     # バリデーションに失敗したとき
     except ValueError as e:
         app.logger.info(e)
