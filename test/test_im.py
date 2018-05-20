@@ -5,10 +5,11 @@ from io import BytesIO
 
 THUMB_LENGTH = str(290)
 
-def resolve_image(name):
+def with_image(name, consumer):
     p = path.dirname(__file__) + "/fixture/images/" + name
     with open(p, "rb") as f:
-        return (BytesIO(f.read()), name)
+        image = BytesIO(f.read())
+        consumer((image, name))
 
 class ImageMagickTestCase(unittest.TestCase):
     def setUp(self):
@@ -22,15 +23,18 @@ class ImageMagickTestCase(unittest.TestCase):
         self.assertEqual(response.data, b"pong")
 
     def test_resize_with_valid_params(self):
-        params = dict(
-            width=THUMB_LENGTH,
-            height=THUMB_LENGTH,
-            data=resolve_image("kosys.png"),
-        )
-        response = self.upload(params)
-        self.assertEqual(response.status_code, 200)
+        def action(image):
+            params = dict(
+                width=THUMB_LENGTH,
+                height=THUMB_LENGTH,
+                data=image,
+            )
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 200)
 
-    def upload(self, params):
+        with_image("kosys.png", action)
+
+    def request_resize(self, params):
         return self.app.post("/resize",
             content_type='multipart/form-data',
             data=params
