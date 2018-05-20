@@ -6,9 +6,11 @@ services:
   - docker
 install:
   - pip install codecov==2.0.15
+  - pip install coverage==4.5.1
 before_script:
 script:
   - docker-compose up --build
+  - docker cp "$(docker-compose ps -q im)":/usr/src/im/.coverage - > .coverage
   - docker cp "$(docker-compose ps -q im)":/usr/src/im/coverage.xml - > coverage.xml
   - codecov
 after_success:

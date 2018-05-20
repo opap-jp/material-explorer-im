@@ -6,13 +6,9 @@ RUN apt-get update \
 
 RUN mkdir /usr/src/im
 WORKDIR /usr/src/im
-COPY requirements.txt .
+COPY . .
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
-
-COPY src ./src
-COPY test ./test
-COPY cmd.sh .
-RUN chmod 755 cmd.sh
+RUN chmod 755 cmd.sh test.sh
 
 CMD ./cmd.sh
