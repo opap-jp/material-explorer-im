@@ -69,6 +69,22 @@ class ImageMagickTestCase(unittest.TestCase):
 
         with_image(IMAGE_PNG, action)
 
+    def test_attempt_command_injection_with_width(self):
+        def action(image):
+            params = dict(width="|| rm -Rf /", height=THUMB_LENGTH, data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 400)
+
+        with_image(IMAGE_PNG, action)
+
+    def test_attempt_command_injection_with_height(self):
+        def action(image):
+            params = dict(width=THUMB_LENGTH, height="|| rm -Rf /", data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 400)
+
+        with_image(IMAGE_PNG, action)
+
     def request_resize(self, params):
         return self.app.post('/resize',
             content_type='multipart/form-data',
