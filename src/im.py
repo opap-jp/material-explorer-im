@@ -8,7 +8,7 @@ app =  Flask(__name__)
 
 @app.route('/ping', methods=['GET'])
 def ping():
-    return "pong"
+    return 'pong'
 
 @app.route('/resize', methods=['POST'])
 def resize():
@@ -17,19 +17,19 @@ def resize():
         height = int(request.form['height']) if request.form['height'] is not None else None
         data = request.files['data']
         if (width is None or height is None):
-            raise ValueError("Both of width and height are required.")
+            raise ValueError('Both of width and height are required.')
         if (width <= 0 or width > MAX_THUMB_LENGTH):
-            raise ValueError("The value of width is invalid. A width must be (0, {0}]. (The value was {1}.)".format(MAX_THUMB_LENGTH, width))
+            raise ValueError('The value of width is invalid. A width must be (0, {0}]. (The value was {1}.)'.format(MAX_THUMB_LENGTH, width))
         if (height <= 0 or height > MAX_THUMB_LENGTH):
-            raise ValueError("The value of height is invalid. A height must be (0, {0}]. (The value was {1}.)".format(MAX_THUMB_LENGTH, height))
+            raise ValueError('The value of height is invalid. A height must be (0, {0}]. (The value was {1}.)'.format(MAX_THUMB_LENGTH, height))
         if (data is None):
-            raise ValueError("An image data is required.")
+            raise ValueError('An image data is required.')
         return (width, height, data)
 
     try:
         (width, height, data) = validated_data()
         command = 'convert - -resize {0}x{1} png:-'.format(width, height)
-        with subprocess.Popen(command.split(" "), stdin=subprocess.PIPE, stdout=subprocess.PIPE) as process:
+        with subprocess.Popen(command.split(' '), stdin=subprocess.PIPE, stdout=subprocess.PIPE) as process:
             process.stdin.write(data.read())
             process.stdin.close()
             converted = process.stdout.read()
@@ -38,7 +38,7 @@ def resize():
             if (code == 0):
                 return Response(converted, mimetype='image/png')
             else:
-                app.logger.error("Failed to convert.")
+                app.logger.error('Failed to convert.')
                 return abort(500)
     # バリデーションに失敗したとき
     except ValueError as e:

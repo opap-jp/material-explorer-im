@@ -6,8 +6,8 @@ from io import BytesIO
 THUMB_LENGTH = str(290)
 
 def with_image(name, consumer):
-    p = path.dirname(__file__) + "/fixture/images/" + name
-    with open(p, "rb") as f:
+    p = path.dirname(__file__) + '/fixture/images/' + name
+    with open(p, 'rb') as f:
         image = BytesIO(f.read())
         consumer((image, name))
 
@@ -19,8 +19,8 @@ class ImageMagickTestCase(unittest.TestCase):
         None
 
     def test_ping(self):
-        response = self.app.get("/ping")
-        self.assertEqual(response.data, b"pong")
+        response = self.app.get('/ping')
+        self.assertEqual(response.data, b'pong')
 
     def test_resize_with_valid_params(self):
         def action(image):
@@ -32,7 +32,7 @@ class ImageMagickTestCase(unittest.TestCase):
             response = self.request_resize(params)
             self.assertEqual(response.status_code, 200)
 
-        with_image("kosys.png", action)
+        with_image('kosys.png', action)
 
     def test_resize_without_width(self):
         def action(image):
@@ -40,7 +40,7 @@ class ImageMagickTestCase(unittest.TestCase):
             response = self.request_resize(params)
             self.assertEqual(response.status_code, 400)
 
-        with_image("kosys.png", action)
+        with_image('kosys.png', action)
 
     def test_resize_without_height(self):
         def action(image):
@@ -48,7 +48,7 @@ class ImageMagickTestCase(unittest.TestCase):
             response = self.request_resize(params)
             self.assertEqual(response.status_code, 400)
 
-        with_image("kosys.png", action)
+        with_image('kosys.png', action)
 
     def test_resize_without_data(self):
         params = dict(width=THUMB_LENGTH, height=THUMB_LENGTH)
@@ -56,9 +56,9 @@ class ImageMagickTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
 
     def request_resize(self, params):
-        return self.app.post("/resize",
+        return self.app.post('/resize',
             content_type='multipart/form-data',
             data=params
         )
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
