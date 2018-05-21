@@ -40,6 +40,21 @@ class ImageMagickTestCase(unittest.TestCase):
             response = self.request_resize(params)
             self.assertEqual(response.status_code, 400)
 
+        with_image("kosys.png", action)
+
+    def test_resize_without_height(self):
+        def action(image):
+            params = dict(width=THUMB_LENGTH, data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 400)
+
+        with_image("kosys.png", action)
+
+    def test_resize_without_data(self):
+        params = dict(width=THUMB_LENGTH, height=THUMB_LENGTH)
+        response = self.request_resize(params)
+        self.assertEqual(response.status_code, 400)
+
     def request_resize(self, params):
         return self.app.post("/resize",
             content_type='multipart/form-data',
