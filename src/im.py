@@ -1,6 +1,5 @@
 from flask import Flask, request, abort, Response
 import subprocess
-# import pdb; pdb.set_trace()
 
 MAX_THUMB_LENGTH = 3840
 
