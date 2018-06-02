@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, Response
 import subprocess
+import filetype
 
 MAX_THUMB_LENGTH = 3840
 
