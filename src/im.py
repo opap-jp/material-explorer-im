@@ -4,6 +4,12 @@ import filetype
 
 MAX_THUMB_LENGTH = 3840
 
+# このサービスがサポートするすべてのフォーマットの集合（ホワイトリスト）です。
+# 送信されたデータの形式が、この集合に含まれるフォーマットに該当しないと判断されると、
+# （たとえそれが ImageMagick でサポートされていても）それは不正な形式として扱われます。
+# *.ai は、 *.pdf として扱われます。
+SUPPORTED_FORMATS = set(['jpeg', 'pdf', 'png', 'psd'])
+
 app =  Flask(__name__)
 
 @app.route('/ping', methods=['GET'])
