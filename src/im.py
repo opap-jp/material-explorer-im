@@ -13,8 +13,8 @@ def ping():
 @app.route('/resize', methods=['POST'])
 def resize():
     def validated_data():
-        width = int(request.form.get('width')) if request.form.get('width') is not None else None
-        height = int(request.form.get('height')) if request.form.get('height') is not None else None
+        width = int(request.form.get('width'))
+        height = int(request.form.get('height'))
         data = request.files.get('data')
         if (width is None or height is None):
             raise ValueError('Both of width and height are required.')
