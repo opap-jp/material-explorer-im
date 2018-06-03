@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 from os import path
 from src import im
 from io import BytesIO
@@ -99,6 +100,29 @@ class ImageMagickTestCase(unittest.TestCase):
             response = self.request_resize(params)
             self.assertEqual(response.status_code, 400)
 
+        with_image(IMAGE_PNG, action)
+
+    @patch('subprocess.Popen')
+    def test_error_occurred_on_command_execution(self, popen):
+        def action(image):
+            params = dict(width=THUMB_LENGTH, height=THUMB_LENGTH, data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 500)
+
+        def raise_error():
+            raise OSError()
+
+        popen.side_effect = raise_error
+        with_image(IMAGE_PNG, action)
+
+    @patch('subprocess.Popen.wait')
+    def test_command_result_non_0_code(self, wait):
+        def action(image):
+            params = dict(width=THUMB_LENGTH, height=THUMB_LENGTH, data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 500)
+
+        wait.return_value = 1
         with_image(IMAGE_PNG, action)
 
     def request_resize(self, params):
