@@ -112,7 +112,8 @@ class ImageMagickTestCase(unittest.TestCase):
         def raise_error():
             raise OSError()
 
-        popen.side_effect = raise_error
+        process = popen.return_value
+        process.stdin.side_effect = raise_error
         with_image(IMAGE_PNG, action)
 
     @patch('subprocess.Popen.wait')
