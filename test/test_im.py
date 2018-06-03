@@ -69,6 +69,22 @@ class ImageMagickTestCase(unittest.TestCase):
 
         with_image(IMAGE_PNG, action)
 
+    def test_resize_with_unsupported_format(self):
+        def action(image):
+            params = dict(width=THUMB_LENGTH, height=THUMB_LENGTH, data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 400)
+
+        with_image('favicon.ico', action)
+
+    def test_resize_with_invalid_format(self):
+        def action(image):
+            params = dict(width=THUMB_LENGTH, height=THUMB_LENGTH, data=image)
+            response = self.request_resize(params)
+            self.assertEqual(response.status_code, 400)
+
+        with_image('invalid.md', action)
+
     def test_attempt_command_injection_with_width(self):
         def action(image):
             params = dict(width="|| rm -Rf /", height=THUMB_LENGTH, data=image)
@@ -90,5 +106,6 @@ class ImageMagickTestCase(unittest.TestCase):
             content_type='multipart/form-data',
             data=params
         )
+
 if __name__ == '__main__':
     unittest.main()
