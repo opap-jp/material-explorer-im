@@ -10,3 +10,9 @@
 ```python
 import pdb; pdb.set_trace()
 ```
+
+実行:
+
+```
+$ python -m unittest discover test
+```

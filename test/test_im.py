@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, PropertyMock, MagicMock
 from os import path
 from src import im
 from io import BytesIO
@@ -109,11 +109,7 @@ class ImageMagickTestCase(unittest.TestCase):
             response = self.request_resize(params)
             self.assertEqual(response.status_code, 500)
 
-        def raise_error():
-            raise OSError()
-
-        process = popen.return_value
-        process.stdin.side_effect = raise_error
+        popen.side_effect = OSError()
         with_image(IMAGE_PNG, action)
 
     @patch('subprocess.Popen.wait')
